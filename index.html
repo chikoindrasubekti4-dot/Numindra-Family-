@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numindra Family</title>
+    <!-- Menggunakan font estetik dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* === PENGATURAN UMUM === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive;
+            font-weight: normal;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        /* === NAVIGASI === */
+        nav {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        nav a {
+            text-decoration: none;
+            color: #555;
+            margin: 0 15px;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: 0.3s;
+        }
+        nav a:hover {
+            color: #ff69b4;
+        }
+
+        /* === BERANDA (Cyan Campur Pink Love) === */
+        #beranda {
+            /* Gradasi Cyan ke Pink yang sangat estetik */
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+        #beranda h1 {
+            font-size: 4em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+        }
+        #beranda p {
+            color: #fff;
+            font-size: 1.2em;
+            margin-bottom: 40px;
+        }
+
+        /* Galeri Foto Bareng (5 Gambar) */
+        .gallery-beranda {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .gallery-beranda img {
+            width: 200px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 4px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .gallery-beranda img:hover {
+            transform: scale(1.05) translateY(-10px);
+            box-shadow: 0 15px 25px rgba(255, 105, 180, 0.4);
+        }
+
+        /* === ALBUM CHIKO (Cyan & Biru Gradasi) === */
+        #chiko {
+            background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%);
+            min-height: 80vh;
+            color: white;
+        }
+        #chiko h2 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 5px rgba(0,0,255,0.2);
+        }
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+        .album-grid img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            transition: 0.3s;
+        }
+        .album-grid img:hover {
+            transform: scale(1.03);
+        }
+
+        /* === ALBUM HANUM (Pink Pink Love) === */
+        #hanum {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            min-height: 80vh;
+            color: white;
+            position: relative;
+        }
+        #hanum h2 {
+            font-size: 3.5em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 5px rgba(255,105,180,0.4);
+        }
+        .love-icon {
+            font-size: 1.5em;
+            animation: pulse 1.5s infinite;
+            display: inline-block;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        /* Footer */
+        footer {
+            background: #fff;
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigasi Menu -->
+    <nav>
+        <div style="text-align: center;">
+            <a href="#beranda">Beranda</a>
+            <a href="#chiko">Album Chiko</a>
+            <a href="#hanum">Album Hanum</a>
+        </div>
+    </nav>
+
+    <!-- BAGIAN 1: BERANDA -->
+    <section id="beranda">
+        <div class="container">
+            <h1>Numindra Family</h1>
+            <p>Kisah kita, terekam dalam warna cyan dan sentuhan cinta ❤️</p>
+            
+            <!-- Tempat Foto Bareng (5 Gambar) -->
+            <div class="gallery-beranda">
+                <!-- Ganti link 'src' dengan link foto aslimu -->
+                <img src="https://via.placeholder.com/200x250/a8edea/ffffff?text=Fotbar+1" alt="Foto Bareng 1">
+                <img src="https://via.placeholder.com/200x250/fed6e3/ffffff?text=Fotbar+2" alt="Foto Bareng 2">
+                <img src="https://via.placeholder.com/200x250/a8edea/ffffff?text=Fotbar+3" alt="Foto Bareng 3">
+                <img src="https://via.placeholder.com/200x250/fed6e3/ffffff?text=Fotbar+4" alt="Foto Bareng 4">
+                <img src="https://via.placeholder.com/200x250/a8edea/ffffff?text=Fotbar+5" alt="Foto Bareng 5">
+            </div>
+        </div>
+    </section>
+
+    <!-- BAGIAN 2: ALBUM CHIKO -->
+    <section id="chiko">
+        <div class="container">
+            <h2>Chiko</h2>
+            <p>Album dengan nuansa cyan dan gradasi biru yang tenang.</p>
+            
+            <div class="album-grid">
+                <!-- Ganti link 'src' dengan foto-foto Chiko -->
+                <img src="https://via.placeholder.com/300x400/66a6ff/ffffff?text=Foto+Chiko+1" alt="Foto Chiko">
+                <img src="https://via.placeholder.com/300x400/89f7fe/ffffff?text=Foto+Chiko+2" alt="Foto Chiko">
+                <img src="https://via.placeholder.com/300x400/66a6ff/ffffff?text=Foto+Chiko+3" alt="Foto Chiko">
+            </div>
+        </div>
+    </section>
+
+    <!-- BAGIAN 3: ALBUM HANUM -->
+    <section id="hanum">
+        <div class="container">
+            <h2>Hanum <span class="love-icon">❤️</span></h2>
+            <p>Album penuh cinta dengan sentuhan warna pink estetik.</p>
+            
+            <div class="album-grid">
+                <!-- Ganti link 'src' dengan foto-foto Hanum -->
+                <img src="https://via.placeholder.com/300x400/ff9a9e/ffffff?text=Foto+Hanum+1" alt="Foto Hanum">
+                <img src="https://via.placeholder.com/300x400/fecfef/ffffff?text=Foto+Hanum+2" alt="Foto Hanum">
+                <img src="https://via.placeholder.com/300x400/ff9a9e/ffffff?text=Foto+Hanum+3" alt="Foto Hanum">
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2026 Numindra Family. Dibuat dengan penuh cinta ❤️</p>
+    </footer>
+
+</body>
+</html>
