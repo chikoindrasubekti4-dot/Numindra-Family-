@@ -6,7 +6,7 @@
     <title>Numindra Family</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* === PENGATURAN UTUM / RESET === */
+        /* === PENGATURAN UMUM / RESET === */
         * {
             margin: 0;
             padding: 0;
@@ -33,6 +33,7 @@
         nav {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             position: fixed;
             width: 100%;
             top: 0;
@@ -48,35 +49,41 @@
             font-weight: 600;
             color: #555;
             cursor: pointer;
+            transition: 0.3s;
         }
-        /* Tombol Garis Tiga (Menu) */
+        .nav-title:hover {
+            color: #ff758c;
+        }
         .menu-icon {
             font-size: 1.8em;
             cursor: pointer;
             color: #555;
             user-select: none;
-            transition: 0.3s;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .menu-icon:hover {
             color: #ff758c;
+            transform: scale(1.1);
         }
-        /* Panel Menu Dropdown/Sidebar */
+
+        /* Panel Menu Sidebar (Smooth Slide) */
         .sidebar-menu {
             position: fixed;
-            top: 60px;
-            right: -300px; /* Sembunyi di kanan awal */
-            width: 280px;
+            top: 0;
+            right: -320px; 
+            width: 300px;
+            height: 100vh;
             background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: -5px 5px 15px rgba(0,0,0,0.1);
-            border-radius: 0 0 0 20px;
-            padding: 25px;
-            transition: 0.4s ease-in-out;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            padding: 90px 25px 25px 25px;
+            transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
             z-index: 999;
             text-align: left;
         }
         .sidebar-menu.active {
-            right: 0; /* Muncul ketika aktif */
+            right: 0;
         }
         .sidebar-menu h3 {
             font-family: 'Poppins', sans-serif;
@@ -89,18 +96,20 @@
         }
         .menu-item-home {
             display: block;
-            background: #f0f0f0;
-            padding: 10px;
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 12px;
             text-align: center;
-            border-radius: 10px;
+            border-radius: 12px;
             text-decoration: none;
-            color: #333;
+            color: #555;
             font-weight: 600;
-            margin-bottom: 20px;
-            transition: 0.3s;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: 0.3s ease;
         }
         .menu-item-home:hover {
-            background: #e0e0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
         .socmed-section {
             margin-bottom: 20px;
@@ -110,7 +119,7 @@
             font-size: 0.9em;
             color: #666;
             margin-top: 10px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
         .socmed-links {
             display: flex;
@@ -120,25 +129,41 @@
             flex: 1;
             text-decoration: none;
             font-size: 0.85em;
-            padding: 6px;
+            padding: 8px;
             text-align: center;
             border-radius: 8px;
             color: white;
             font-weight: bold;
-            transition: 0.2s;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
         }
-        .btn-chiko-sm { background-color: #00f2fe; color: #333 !important; }
-        .btn-hanum-sm { background-color: #ff758c; }
-        .socmed-links a:hover { opacity: 0.8; transform: translateY(-2px); }
+        .btn-chiko-sm { background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); }
+        .btn-hanum-sm { background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); }
+        .socmed-links a:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
 
-        /* === SISTEM HALAMAN (SPA) === */
+        /* === SISTEM HALAMAN & ANIMASI TRANSISI === */
         .page {
-            display: none; /* Sembunyikan semua halaman secara default */
+            display: none;
             min-height: 100vh;
             padding-top: 90px;
+            opacity: 0;
         }
         .page.active {
-            display: block; /* Hanya tampilkan halaman dengan class 'active' */
+            display: block;
+            animation: fadeInSlideUp 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* === BERANDA (Cyan Campur Pink Love) === */
@@ -148,14 +173,14 @@
         #beranda h1 {
             font-size: 3.5em;
             color: #fff;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.1);
             margin-bottom: 10px;
         }
         #beranda p.subtitle {
             color: #fff;
             font-size: 1.1em;
             margin-bottom: 35px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.05);
         }
 
         /* Galeri Foto Bareng (5 Gambar) */
@@ -172,12 +197,12 @@
             object-fit: cover;
             border-radius: 20px;
             border: 4px solid white;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-            transition: 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
         }
         .gallery-beranda img:hover {
-            transform: scale(1.05) rotate(2deg);
-            box-shadow: 0 12px 22px rgba(255, 105, 180, 0.3);
+            transform: scale(1.08) translateY(-8px) rotate(1deg);
+            box-shadow: 0 20px 30px rgba(255, 105, 180, 0.25);
         }
 
         /* Tombol Akses Album Utama */
@@ -187,50 +212,49 @@
             gap: 20px;
             flex-wrap: wrap;
             margin-top: 20px;
-            padding: 0 10px;
+            padding-bottom: 40px;
         }
         .btn-album {
-            padding: 15px 35px;
+            padding: 16px 40px;
             font-size: 1.2em;
             font-weight: 600;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            transition: 0.3s transform, 0.3s box-shadow;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
             color: white;
-            min-width: 220px;
+            min-width: 230px;
         }
         .btn-album-chiko {
             background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            color: #fff;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
         .btn-album-hanum {
             background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
         }
         .btn-album:hover {
-            transform: translateY(-5px);
+            transform: translateY(-6px);
             box-shadow: 0 15px 25px rgba(0,0,0,0.15);
         }
 
-        /* === TIMBUL TOMBOL KEMBALI === */
+        /* === TOMBOL KEMBALI === */
         .btn-back {
-            background: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.75);
             border: none;
-            padding: 8px 20px;
+            padding: 10px 24px;
             border-radius: 30px;
             font-weight: 600;
             cursor: pointer;
             margin-bottom: 30px;
-            transition: 0.3s;
+            transition: background 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         .btn-back:hover {
             background: rgba(255, 255, 255, 1);
-            transform: translateX(-3px);
+            transform: translateX(-5px);
         }
 
         /* === ALBUM CHIKO (Cyan Gradasi Cerah) === */
@@ -241,10 +265,10 @@
         #chiko h2 {
             font-size: 3.5em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.1);
         }
 
-        /* === ALBUM HANUM (Pink Gradasi Romantis + Love) === */
+        /* === ALBUM HANUM (Pink Gradasi Romantis) === */
         #hanum {
             background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
             color: white;
@@ -252,7 +276,7 @@
         #hanum h2 {
             font-size: 3.5em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.15);
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.1);
         }
         .love-pulse {
             display: inline-block;
@@ -268,29 +292,31 @@
         .album-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
+            gap: 25px;
             margin-top: 20px;
         }
         .album-grid img {
             width: 100%;
-            height: 320px;
+            height: 340px;
             object-fit: cover;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            border: 3px solid white;
-            transition: 0.3s;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+            border: 4px solid white;
+            transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.5s ease;
         }
         .album-grid img:hover {
-            transform: translateY(-5px);
+            transform: scale(1.04) translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         }
 
         /* FOOTER */
         footer {
             background: #fff;
             text-align: center;
-            padding: 15px;
+            padding: 20px;
             color: #888;
             font-size: 0.85em;
+            border-top: 1px solid #f0f0f0;
         }
     </style>
 </head>
@@ -298,7 +324,7 @@
 
     <nav>
         <div class="nav-title" onclick="navigateTo('beranda')">✨ Numindra Family</div>
-        <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+        <div class="menu-icon" id="menuBtn" onclick="toggleSidebar()">☰</div>
     </nav>
 
     <div class="sidebar-menu" id="sidebarMenu">
@@ -309,24 +335,24 @@
         <div class="socmed-section">
             <p>📸 Instagram</p>
             <div class="socmed-links">
-                <a href="#" target="_blank" class="btn-chiko-sm">Chiko</a>
-                <a href="#" target="_blank" class="btn-hanum-sm">Hanum</a>
+                <a href="https://www.instagram.com/ndrsbkti?igsh=NmthM3JtcWZ5eGpl" target="_blank" class="btn-chiko-sm">Chiko</a>
+                <a href="https://www.instagram.com/hanuummm5?igsh=MTFtczJhc2JjOTVnYQ==" target="_blank" class="btn-hanum-sm">Hanum</a>
             </div>
         </div>
 
         <div class="socmed-section">
             <p>🎵 TikTok</p>
             <div class="socmed-links">
-                <a href="#" target="_blank" class="btn-chiko-sm">Chiko</a>
-                <a href="#" target="_blank" class="btn-hanum-sm">Hanum</a>
+                <a href="https://tiktok.com/@chikoindraaaa" target="_blank" class="btn-chiko-sm">Chiko</a>
+                <a href="https://www.tiktok.com/@segotworock910?_r=1&_t=ZS-96WPHgX0ILc" target="_blank" class="btn-hanum-sm">Hanum</a>
             </div>
         </div>
 
         <div class="socmed-section">
             <p>💬 WhatsApp</p>
             <div class="socmed-links">
-                <a href="#" target="_blank" class="btn-chiko-sm">Chiko</a>
-                <a href="#" target="_blank" class="btn-hanum-sm">Hanum</a>
+                <a href="https://api.whatsapp.com/send/?phone=6285732664296&text&type=phone_number&app_absent=0" target="_blank" class="btn-chiko-sm">Chiko</a>
+                <a href="https://api.whatsapp.com/send/?phone=6283189197284&text&type=phone_number&app_absent=0" target="_blank" class="btn-hanum-sm">Hanum</a>
             </div>
         </div>
     </div>
@@ -384,42 +410,49 @@
     </footer>
 
     <script>
-        // Fungsi Membuka & Menutup Sidebar Menu
         function toggleSidebar() {
             const menu = document.getElementById('sidebarMenu');
+            const menuIcon = document.getElementById('menuBtn');
             menu.classList.toggle('active');
+            
+            if (menu.classList.contains('active')) {
+                menuIcon.style.transform = 'rotate(90deg)';
+                menuIcon.innerHTML = '✕';
+            } else {
+                menuIcon.style.transform = 'rotate(0deg)';
+                menuIcon.innerHTML = '☰';
+            }
         }
 
-        // Fungsi Perpindahan Halaman Otomatis (SPA)
         function navigateTo(pageId) {
-            // Sembunyikan semua halaman terlebih dahulu
             const pages = document.querySelectorAll('.page');
             pages.forEach(page => {
                 page.classList.remove('active');
             });
 
-            // Tampilkan halaman tujuan
             const targetPage = document.getElementById(pageId);
             if(targetPage) {
                 targetPage.classList.add('active');
             }
 
-            // Otomatis tutup kembali sidebar setelah menu diklik
             const menu = document.getElementById('sidebarMenu');
+            const menuIcon = document.getElementById('menuBtn');
             menu.classList.remove('active');
+            menuIcon.style.transform = 'rotate(0deg)';
+            menuIcon.innerHTML = '☰';
 
-            // Scroll otomatis ke atas layar saat ganti halaman
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // Menutup menu jika user mengklik area di luar menu sidebar
         window.onclick = function(event) {
             const menu = document.getElementById('sidebarMenu');
-            const menuIcon = document.querySelector('.menu-icon');
+            const menuIcon = document.getElementById('menuBtn');
             if (!menu.contains(event.target) && event.target !== menuIcon) {
                 menu.classList.remove('active');
+                menuIcon.style.transform = 'rotate(0deg)';
+                menuIcon.innerHTML = '☰';
             }
         }
     </script>
 </body>
-    </html>
+</html>
