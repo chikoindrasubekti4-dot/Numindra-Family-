@@ -14,9 +14,12 @@
         }
         body {
             font-family: 'Poppins', sans-serif;
-            color: #333;
+            color: #222;
             overflow-x: hidden;
-            background-color: #f7f9fa;
+            /* Latar belakang gradasi abstrak iOS style */
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #c3cfe2 100%);
+            background-attachment: fixed;
+            background-size: cover;
         }
         h1, h2, h3 {
             font-family: 'Pacifico', cursive;
@@ -29,25 +32,26 @@
             text-align: center;
         }
 
-        /* === NAVIGASI & HAMBURGER MENU === */
+        /* === NAVIGASI GLASSMORPHISM (iOS Style) === */
         nav {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
             padding: 15px 25px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
         }
         .nav-title {
             font-size: 1.2em;
             font-weight: 600;
-            color: #555;
+            color: #333;
             cursor: pointer;
             transition: 0.3s;
         }
@@ -57,26 +61,23 @@
         .menu-icon {
             font-size: 1.8em;
             cursor: pointer;
-            color: #555;
+            color: #333;
             user-select: none;
             transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .menu-icon:hover {
-            color: #ff758c;
-            transform: scale(1.1);
-        }
 
-        /* Panel Menu Sidebar (Smooth Slide) */
+        /* Panel Menu Sidebar Glassmorphism */
         .sidebar-menu {
             position: fixed;
             top: 0;
             right: -320px; 
             width: 300px;
             height: 100vh;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-left: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.05);
             padding: 90px 25px 25px 25px;
             transition: right 0.5s cubic-bezier(0.77, 0, 0.175, 1);
             z-index: 999;
@@ -89,27 +90,27 @@
             font-family: 'Poppins', sans-serif;
             font-weight: 600;
             font-size: 1.1em;
-            color: #444;
+            color: #333;
             margin-bottom: 15px;
-            border-bottom: 2px solid #fed6e3;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
             padding-bottom: 5px;
         }
         .menu-item-home {
             display: block;
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            background: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.5);
             padding: 12px;
             text-align: center;
-            border-radius: 12px;
+            border-radius: 14px;
             text-decoration: none;
-            color: #555;
+            color: #333;
             font-weight: 600;
             margin-bottom: 30px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             transition: 0.3s ease;
         }
         .menu-item-home:hover {
+            background: rgba(255, 255, 255, 0.9);
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
         }
         .socmed-section {
             margin-bottom: 20px;
@@ -117,7 +118,7 @@
         .socmed-section p {
             font-weight: 600;
             font-size: 0.9em;
-            color: #666;
+            color: #444;
             margin-top: 10px;
             margin-bottom: 8px;
         }
@@ -129,25 +130,37 @@
             flex: 1;
             text-decoration: none;
             font-size: 0.85em;
-            padding: 8px;
+            padding: 10px;
             text-align: center;
-            border-radius: 8px;
+            border-radius: 10px;
             color: white;
             font-weight: bold;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .btn-chiko-sm { background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%); }
+        .btn-chiko-sm { background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); }
         .btn-hanum-sm { background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); }
         .socmed-links a:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* === GLASSMORPHISM CARD CONTAINER === */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 30px;
+            padding: 40px 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
         }
 
         /* === SISTEM HALAMAN & ANIMASI TRANSISI === */
         .page {
             display: none;
             min-height: 100vh;
-            padding-top: 90px;
+            padding-top: 110px;
             opacity: 0;
         }
         .page.active {
@@ -158,7 +171,7 @@
         @keyframes fadeInSlideUp {
             from {
                 opacity: 0;
-                transform: translateY(30px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -166,21 +179,16 @@
             }
         }
 
-        /* === BERANDA (Cyan Campur Pink Love) === */
-        #beranda {
-            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-        }
+        /* === BERANDA === */
         #beranda h1 {
             font-size: 3.5em;
-            color: #fff;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+            color: #333;
             margin-bottom: 10px;
         }
         #beranda p.subtitle {
-            color: #fff;
+            color: #555;
             font-size: 1.1em;
             margin-bottom: 35px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.05);
         }
 
         /* Galeri Foto Bareng (5 Gambar) */
@@ -189,94 +197,85 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 15px;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
         .gallery-beranda img {
             width: 170px;
             height: 220px;
             object-fit: cover;
             border-radius: 20px;
-            border: 4px solid white;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.08);
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.5s ease;
+            border: 3px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .gallery-beranda img:hover {
-            transform: scale(1.08) translateY(-8px) rotate(1deg);
-            box-shadow: 0 20px 30px rgba(255, 105, 180, 0.25);
+            transform: scale(1.06) translateY(-8px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
         }
 
-        /* Tombol Akses Album Utama */
+        /* Tombol Akses Album Utama (Spotify/Apple Music Style) */
         .album-selection-zone {
             display: flex;
             justify-content: center;
             gap: 20px;
             flex-wrap: wrap;
             margin-top: 20px;
-            padding-bottom: 40px;
         }
         .btn-album {
             padding: 16px 40px;
-            font-size: 1.2em;
+            font-size: 1.1em;
             font-weight: 600;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
             color: white;
             min-width: 230px;
         }
         .btn-album-chiko {
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+            box-shadow: 0 6px 20px rgba(0, 114, 255, 0.3);
         }
         .btn-album-hanum {
             background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.3);
         }
         .btn-album:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
         }
 
         /* === TOMBOL KEMBALI === */
         .btn-back {
-            background: rgba(255, 255, 255, 0.75);
-            border: none;
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             padding: 10px 24px;
             border-radius: 30px;
             font-weight: 600;
+            color: #333;
             cursor: pointer;
             margin-bottom: 30px;
-            transition: background 0.3s, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
         .btn-back:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: translateX(-5px);
+            background: rgba(255, 255, 255, 0.8);
+            transform: translateX(-4px);
         }
 
-        /* === ALBUM CHIKO (Cyan Gradasi Cerah) === */
-        #chiko {
-            background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-            color: white;
-        }
-        #chiko h2 {
+        /* === ALBUM SECTIONS === */
+        .page h2 {
             font-size: 3.5em;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+            color: #333;
         }
-
-        /* === ALBUM HANUM (Pink Gradasi Romantis) === */
-        #hanum {
-            background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
-            color: white;
-        }
-        #hanum h2 {
-            font-size: 3.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+        .page p.album-desc {
+            color: #555;
+            margin-bottom: 30px;
         }
         .love-pulse {
             display: inline-block;
@@ -284,39 +283,41 @@
         }
         @keyframes pulse {
             0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            50% { transform: scale(1.15); }
             100% { transform: scale(1); }
         }
 
-        /* Grid Foto Dalam Album */
+        /* Grid Foto Dalam Album (Apple Music Card Grid) */
         .album-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: 25px;
-            margin-top: 20px;
         }
         .album-grid img {
             width: 100%;
             height: 340px;
             object-fit: cover;
             border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.12);
-            border: 4px solid white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            border: 4px solid rgba(255, 255, 255, 0.7);
             transition: transform 0.5s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.5s ease;
         }
         .album-grid img:hover {
-            transform: scale(1.04) translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            transform: scale(1.03) translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
         }
 
         /* FOOTER */
         footer {
-            background: #fff;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
             text-align: center;
-            padding: 20px;
-            color: #888;
+            padding: 25px;
+            color: #666;
             font-size: 0.85em;
-            border-top: 1px solid #f0f0f0;
+            margin-top: 40px;
         }
     </style>
 </head>
@@ -359,20 +360,22 @@
 
     <section id="beranda" class="page active">
         <div class="container">
-            <h1>Numindra Family</h1>
-            <p class="subtitle"></p>
-            
-            <div class="gallery-beranda">
-                <img src="fotbar1.jpg" alt="Foto Bareng 1">
-                <img src="fotbar2.jpg" alt="Foto Bareng 2">
-                <img src="fotbar3.jpg" alt="Foto Bareng 3">
-                <img src="fotbar4.jpg" alt="Foto Bareng 4">
-                <img src="fotbar5.jpg" alt="Foto Bareng 5">
-            </div>
+            <div class="glass-card">
+                <h1>Numindra Family</h1>
+                <p class="subtitle">Kisah kita, terekam dalam warna cyan dan sentuhan cinta ❤️</p>
+                
+                <div class="gallery-beranda">
+                    <img src="fotbar1.jpg" alt="Foto Bareng 1">
+                    <img src="fotbar2.jpg" alt="Foto Bareng 2">
+                    <img src="fotbar3.jpg" alt="Foto Bareng 3">
+                    <img src="fotbar4.jpg" alt="Foto Bareng 4">
+                    <img src="fotbar5.jpg" alt="Foto Bareng 5">
+                </div>
 
-            <div class="album-selection-zone">
-                <button class="btn-album btn-album-chiko" onclick="navigateTo('chiko')">🌊 Album Chiko</button>
-                <button class="btn-album btn-album-hanum" onclick="navigateTo('hanum')">💕 Album Hanum</button>
+                <div class="album-selection-zone">
+                    <button class="btn-album btn-album-chiko" onclick="navigateTo('chiko')">🌊 Album Chiko</button>
+                    <button class="btn-album btn-album-hanum" onclick="navigateTo('hanum')">💕 Album Hanum</button>
+                </div>
             </div>
         </div>
     </section>
@@ -380,13 +383,16 @@
     <section id="chiko" class="page">
         <div class="container">
             <button class="btn-back" onclick="navigateTo('beranda')">⬅ Kembali ke Beranda</button>
-            <h2>Chiko 🌊</h2>
-            <p></p>
             
-            <div class="album-grid">
-                <img src="chiko1.jpg" alt="Foto Chiko 1">
-                <img src="chiko2.jpg" alt="Foto Chiko 2">
-                <img src="chiko3.jpg" alt="Foto Chiko 3">
+            <div class="glass-card">
+                <h2>Chiko 🌊</h2>
+                <p class="album-desc">Nuansa cyan cerah & gradasi biru segar ala Spotify Player.</p>
+                
+                <div class="album-grid">
+                    <img src="chiko1.jpg" alt="Foto Chiko 1">
+                    <img src="chiko2.jpg" alt="Foto Chiko 2">
+                    <img src="chiko3.jpg" alt="Foto Chiko 3">
+                </div>
             </div>
         </div>
     </section>
@@ -394,19 +400,22 @@
     <section id="hanum" class="page">
         <div class="container">
             <button class="btn-back" onclick="navigateTo('beranda')">⬅ Kembali ke Beranda</button>
-            <h2>Hanum <span class="love-pulse">💖</span></h2>
-            <p></p>
             
-            <div class="album-grid">
-                <img src="hanum1.jpg" alt="Foto Hanum 1">
-                <img src="hanum2.jpg" alt="Foto Hanum 2">
-                <img src="hanum3.jpg" alt="Foto Hanum 3">
+            <div class="glass-card">
+                <h2>Hanum <span class="love-pulse">💖</span></h2>
+                <p class="album-desc">Nuansa pink lembut bertabur cinta romantis ala Apple Music.</p>
+                
+                <div class="album-grid">
+                    <img src="hanum1.jpg" alt="Foto Hanum 1">
+                    <img src="hanum2.jpg" alt="Foto Hanum 2">
+                    <img src="hanum3.jpg" alt="Foto Hanum 3">
+                </div>
             </div>
         </div>
     </section>
 
     <footer>
-        <p>&copy;Numindra Family❤️</p>
+        <p>&copy; 2026 Numindra Family. Dibuat dengan penuh cinta ❤️</p>
     </footer>
 
     <script>
@@ -455,4 +464,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
