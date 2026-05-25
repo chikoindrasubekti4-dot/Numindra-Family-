@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Numindra VisionOS - Immersive Premium Spatial UI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* === VISIONOS & APPLE EVENT DESIGN SYSTEM VARIABLES === */
+        :root {
+            --chiko-cyan: #00f0ff;
+            --chiko-glow: rgba(0, 240, 255, 0.35);
+            --hanum-pink: #ff527b;
+            --hanum-glow: rgba(255, 82, 123, 0.35);
+            --glass-base: rgba(15, 15, 25, 0.3);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-wet: rgba(255, 255, 255, 0.03);
+            --text-main: #f5f5f7;
+            --text-sub: #8e8e93;
+            --radius-premium: 32px;
+            --shadow-deep: 0 40px 100px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255,255,255,0.12);
+            --elastic-transition: all 0.7s cubic-bezier(0.25, 1, 0.3, 1);
+        }
+
+        /* === HARDWARE ACCELERATION & RESET === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-font-smoothing: antialiased;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            background: #010103;
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+            overflow: hidden; /* Mencegah default scroll demi Inertia & Elastic Snap Page Control */
+        }
+
+        /* === ANAMORPHIC NOISE / GRAIN FILM OVERLAY === */
+        .film-grain {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.022;
+            pointer-events: none;
+            z-index: 9995;
+        }
+
+        /* === PREMIUM STARTUP ANIMATION & CINEMATIC BLACK FADE === */
+        .spatial-boot-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #000000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), filter 1.2s ease;
+        }
+        .boot-logo-container {
+            position: relative;
+            opacity: 0;
+            transform: scale(0.9) translateZ(0);
+            animation: bootReveal 2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+        }
+        .boot-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.2em;
+            font-weight: 600;
+            letter-spacing: -1px;
+            background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.4) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 2;
+        }
+        .boot-bloom {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 140px; height: 140px;
+            background: radial-gradient(circle, rgba(0,240,255,0.3) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            filter: blur(10px);
+            animation: pulseBloom 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes bootReveal {
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes pulseBloom {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.9; }
+        }
+
+        /* === LIVE BACKGROUND ENGINE: DYNAMIC AURORA & FLOATING ORBS === */
+        .spatial-universe {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -4;
+            background: radial-gradient(circle at 50% 50%, #060713, #010103);
+            transition: background 1.5s cubic-bezier(0.25, 1, 0.3, 1);
+        }
+        .aurora-mesh {
+            position: fixed;
+            top: -20%; left: -20%; width: 140%; height: 140%;
+            background: radial-gradient(at 10% 20%, rgba(0, 240, 255, 0.15) 0px, transparent 40%),
+                        radial-gradient(at 90% 10%, rgba(255, 82, 123, 0.15) 0px, transparent 40%),
+                        radial-gradient(at 50% 80%, rgba(147, 51, 234, 0.1) 0px, transparent 50%);
+            filter: blur(60px);
+            z-index: -3;
+            animation: liveMesh 20s infinite alternate linear;
+        }
+        @keyframes liveMesh {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(8deg) scale(1.08); }
+        }
+      /* === NEON SPARK PARTICLES & LIVE SKY === */
+        #skyCanvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        /* === SCROLL PROGRESS BAR AESTHETIC === */
+        .ios-scroll-indicator {
+            position: fixed;
+            top: 0; left: 0; width: 0%; height: 3px;
+            background: linear-gradient(90deg, var(--chiko-cyan), var(--hanum-pink));
+            box-shadow: 0 0 12px var(--chiko-cyan);
+            z-index: 9990;
+            transition: width 0.1s linear;
+        }
+
+        /* === MASTER SYSTEM SNAP INTERTIA CONTAINER === */
+        .viewport-space {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 10;
+            transition: transform 0.8s cubic-bezier(0.25, 1, 0.3, 1), filter 0.8s ease;
+        }
+
+        /* === VISIONOS STYLE FLOATING CARD & WET GLASS === */
+        .ios-view-section {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 24px;
+            position: absolute;
+            top: 0; left: 0;
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95) translateZ(-100px);
+            filter: blur(20px);
+            transition: opacity 0.8s cubic-bezier(0.25, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.25, 1, 0.3, 1),
+                        filter 0.8s ease;
+        }
+
+        .ios-view-section.active-space {
+            opacity: 1;
+            pointer-events: auto;
+            transform: scale(1) translateZ(0);
+            filter: blur(0);
+        }
+
+        .spatial-card {
+            width: 100%;
+            max-width: 1150px;
+            max-height: 85vh;
+            background: var(--glass-base);
+            backdrop-filter: blur(40px) saturate(210%);
+            -webkit-backdrop-filter: blur(40px) saturate(210%);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-premium);
+            padding: 45px;
+            box-shadow: var(--shadow-deep);
+            overflow-y: auto;
+            position: relative;
+            scroll-behavior: smooth;
+        }
+
+        /* Glass Reflection & Shimmer Effects */
+        .spatial-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%, rgba(0,240,255,0.02) 100%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        /* Wet Glass Texture Layer Style */
+        .wet-texture {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.01);
+            box-shadow: inset 0 0 60px rgba(255,255,255,0.03);
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        /* Custom Scrollbar for Inner Card */
+        .spatial-card::-webkit-scrollbar { width: 5px; }
+        .spatial-card::-webkit-scrollbar-track { background: transparent; }
+        .spatial-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 10px; }
+
+        /* === APPLE EVENT TYPOGRAPHY === */
+        .apple-gradient-text {
+            font-size: 3.8em;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            margin-bottom: 8px;
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 8s ease infinite alternate;
+        }
+
+        .spatial-sub {
+            color: var(--text-sub);
+            font-size: 1.1em;
+            font-weight: 400;
+            margin-bottom: 35px;
+            letter-spacing: 0.3px;
+                                                  }
+      /* === SYSTEM WIDGETS SECTION (APPLE STYLE) === */
+        .ios-widget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .apple-widget {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.3, 1);
+        }
+        .apple-widget:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        /* Widget Live Clock & Weather */
+        .widget-label { font-size: 0.75em; font-weight: 600; color: var(--text-sub); text-transform: uppercase; letter-spacing: 1px; }
+        .widget-value { font-size: 2em; font-weight: 700; color: #fff; margin-top: 10px; margin-bottom: 2px; }
+        .widget-desc { font-size: 0.8em; color: var(--text-sub); }
+
+        .weather-icon-glow {
+            position: absolute; right: 15px; bottom: 15px;
+            font-size: 2.2em; filter: drop-shadow(0 0 10px var(--chiko-cyan));
+            animation: pulseGlow 2s ease-in-out infinite alternate;
+        }
+
+        /* === PINTEREST MASONRY IMMERSIVE LAYOUT === */
+        .pinterest-grid-space {
+            columns: 4 230px;
+            column-gap: 24px;
+            width: 100%;
+        }
+        @media (max-width: 768px) {
+            .pinterest-grid-space { columns: 2 140px; column-gap: 16px; }
+        }
+
+        .immersive-thumb {
+            break-inside: avoid;
+            margin-bottom: 24px;
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.01);
+            border: 1px solid var(--glass-border);
+            cursor: pointer;
+            transform: translateZ(0);
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.3, 1), border-color 0.4s;
+        }
+        @media (max-width: 768px) { .immersive-thumb { margin-bottom: 16px; } }
+
+        .immersive-thumb::after {
+            content: ''; position: absolute; top:0; left:0; width:100%; height:100%;
+            border-radius: 24px; box-shadow: inset 0 1px 1px rgba(255,255,255,0.2);
+            pointer-events: none;
+        }
+
+        .immersive-thumb:hover {
+            transform: scale(1.03) translateY(-6px);
+            border-color: var(--chiko-cyan);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 20px rgba(0,240,255,0.15);
+        }
+
+        .immersive-thumb img {
+            width: 100%; height: auto; display: block;
+            border-radius: 24px; filter: blur(15px);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1), filter 0.6s ease;
+        }
+        .immersive-thumb img.img-ready { filter: blur(0); }
+        .immersive-thumb:hover img { transform: scale(1.02); }
+
+        /* Skeleton Shimmer Layout */
+        .shimmer-mask {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+            background-size: 200% 100%; animation: shimmerGo 1.6s infinite;
+            z-index: 2; pointer-events: none;
+        }
+        @keyframes shimmerGo {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(1.1); opacity: 1; }
+              }
+      /* === INTERACTIVE DRAGGABLE POLAROID PHOTO STACK === */
+        .polaroid-stack-zone {
+            position: relative;
+            width: 100%;
+            height: 420px;
+            margin: 50px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .draggable-polaroid {
+            position: absolute;
+            width: 240px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 14px 14px 40px 14px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+            cursor: grab;
+            transform-origin: center center;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.3, 1), box-shadow 0.3s;
+            z-index: 10;
+        }
+        .draggable-polaroid:active { cursor: grabbing; scale: 1.05; z-index: 100 !important; }
+
+        .draggable-polaroid img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            pointer-events: none;
+        }
+
+        /* Photo Reflection Floor Effect */
+        .polaroid-reflection-floor {
+            position: absolute;
+            bottom: -30px; left: 0; width: 100%; height: 40px;
+            background: linear-gradient(0deg, transparent, rgba(255,255,255,0.02));
+            filter: blur(4px); pointer-events: none;
+        }
+
+        /* === PREMIUM INTERACTIVE BUTTONS WITH MAGNETIC GLOW === */
+        .action-hub-center {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .magnetic-btn {
+            padding: 18px 46px;
+            font-size: 1.05em;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            color: #ffffff;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s, border-color 0.4s;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .btn-chiko-space { box-shadow: 0 10px 30px rgba(0, 240, 255, 0.08), inset 0 1px 1px rgba(255,255,255,0.1); }
+        .btn-chiko-space:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--chiko-glow), 0 0 25px var(--chiko-cyan);
+            border-color: var(--chiko-cyan);
+        }
+
+        .btn-hanum-space { box-shadow: 0 10px 30px rgba(255, 82, 123, 0.08), inset 0 1px 1px rgba(255,255,255,0.1); }
+        .btn-hanum-space:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--hanum-glow), 0 0 25px var(--hanum-pink);
+            border-color: var(--hanum-pink);
+        }
+
+        /* === EASTER EGG & CONTROLS INTERACTIVE === */
+        .system-toggles-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .egg-pill-btn {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--glass-border);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.8em;
+            font-weight: 500;
+            color: var(--text-sub);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .egg-pill-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            transform: scale(1.05);
+        }
+        .egg-pill-btn.active-pill {
+            background: rgba(0, 240, 255, 0.15);
+            border-color: var(--chiko-cyan);
+            color: var(--chiko-cyan);
+            text-shadow: 0 0 8px var(--chiko-cyan);
+        }
+      /* === FULLSCREEN IMMERSIVE LIGHTBOX WITH DYNAMIC BLUR === */
+        .immersive-lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(4, 4, 8, 0.4);
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            z-index: 2500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.3, 1);
+        }
+        .immersive-lightbox.show-box {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .lightbox-container {
+            position: relative;
+            max-width: 85%;
+            max-height: 80vh;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .lightbox-main-img {
+            max-width: 100%; max-height: 75vh; object-fit: contain;
+            border-radius: 24px; box-shadow: 0 50px 120px rgba(0,0,0,0.8);
+            transform: scale(0.92) blur(15px);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.3, 1), filter 0.6s ease;
+        }
+        .immersive-lightbox.show-box .lightbox-main-img {
+            transform: scale(1) blur(0);
+        }
+
+        /* Lightbox Navigation UI Controls */
+        .lightbox-nav-btn {
+            position: absolute; width: 56px; height: 56px;
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            color: #fff; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 1.2em;
+            transition: background 0.3s, transform 0.2s; z-index: 2600;
+        }
+        .lightbox-nav-btn:hover { background: rgba(255,255,255,0.15); transform: scale(1.1); }
+        .box-close-btn { top: -75px; right: 0; }
+        .box-prev-btn { left: -85px; top: 50%; transform: translateY(-50%); }
+        .box-next-btn { right: -85px; top: 50%; transform: translateY(-50%); }
+
+        @media (max-width: 992px) {
+            .box-prev-btn { left: 10px; bottom: -80px; top: auto; transform: none; }
+            .box-next-btn { right: 10px; bottom: -80px; top: auto; transform: none; }
+            .box-close-btn { top: -70px; right: 50%; transform: translateX(50%); }
+        }
+
+        /* === SPOTIFY REALTIME MINI PLAYER & LYRIC POPUP === */
+        .spotify-spatial-player {
+            position: fixed;
+            bottom: 115px; right: 24px;
+            width: 310px;
+            background: rgba(10, 10, 18, 0.45);
+            backdrop-filter: blur(35px) saturate(190%);
+            -webkit-backdrop-filter: blur(35px) saturate(190%);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px; padding: 16px;
+            box-shadow: var(--shadow-deep); z-index: 850;
+            display: flex; flex-direction: column; gap: 12px;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.3, 1), background 0.3s;
+        }
+        .spotify-spatial-player:hover {
+            transform: translateY(-5px) translateZ(10px);
+            background: rgba(20, 20, 35, 0.55);
+        }
+
+        .player-core-row { display: flex; align-items: center; gap: 14px; }
+        .music-vinyl-disk {
+            width: 52px; height: 52px; border-radius: 14px;
+            background: linear-gradient(45deg, #1db954, var(--chiko-cyan));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4em; box-shadow: 0 8px 20px rgba(0,240,255,0.25);
+            animation: rotateVinyl 8s linear infinite paused;
+        }
+        .spotify-spatial-player.active-playing .music-vinyl-disk { animation-play-state: running; }
+        @keyframes rotateVinyl { 100% { transform: rotate(360deg); } }
+
+        .track-meta-data { flex: 1; overflow: hidden; }
+        .track-core-title { font-size: 0.9em; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .track-core-artist { font-size: 0.78em; color: var(--text-sub); margin-top: 1px; }
+
+        .player-action-btn { background: none; border: none; color: #fff; font-size: 1.2em; cursor: pointer; padding: 4px; transition: scale 0.2s; }
+        .player-action-btn:hover { scale: 1.15; }
+
+        /* Realtime Lyric Popup Engine Style */
+        .lyric-popup-panel {
+            font-size: 0.78em; color: var(--chiko-cyan);
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding-top: 10px; min-height: 24px; font-style: italic;
+            opacity: 0.8; transition: opacity 0.3s;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        }
+
+        /* === LOVEFALL/SNOWFALL LIVE CANVAS GENERATOR === */
+        #lovefallCanvas {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 5; pointer-events: none; display: none;
+          }
+      <div class="film-grain"></div>
+    <div class="ios-scroll-indicator" id="scrollProgress"></div>
+
+    <div class="spatial-boot-screen" id="bootScreen">
+        <div class="boot-logo-container">
+            <div class="boot-bloom"></div>
+            <h1 class="boot-title">Numindra OS</h1>
+        </div>
+    </div>
+
+    <div class="spatial-universe" id="universeEngine">
+        <div class="aurora-mesh"></div>
+    </div>
+    <canvas id="skyCanvas"></canvas>
+    <canvas id="lovefallCanvas"></canvas>
+
+    <div class="viewport-space" id="viewportSpace">
+
+        <section class="ios-view-section active-space" id="sec-home">
+            <div class="spatial-card">
+                <div class="wet-texture"></div>
+                
+                <h2 class="apple-gradient-text" id="typingTarget">Numindra Space</h2>
+                <p class="spatial-sub">Immersive Spatial UI Environment. Ekosistem digital penuh memori estetik, cinta, dan masa depan.</p>
+                
+                <div class="ios-widget-grid">
+                    <div class="apple-widget">
+                        <span class="widget-label">Live Clock</span>
+                        <div class="widget-value" id="liveClock">00:00:00</div>
+                        <span class="widget-desc" id="liveDate">Selasa, 26 Mei 2026</span>
+                    </div>
+                    <div class="apple-widget">
+                        <span class="widget-label">Weather System</span>
+                        <div class="widget-value" id="weatherTemp">26°C</div>
+                        <span class="widget-desc">Atmosphere: Dreamy Vibes</span>
+                        <span class="weather-icon-glow" id="weatherIcon">✨</span>
+                    </div>
+                    <div class="apple-widget">
+                        <span class="widget-label">AI Status</span>
+                        <div class="widget-value" style="font-size: 1.5em; margin-top: 15px; color: var(--chiko-cyan);">Online</div>
+                        <span class="widget-desc">System Core v2.6 Mulus</span>
+                    </div>
+                </div>
+
+                <div class="pinterest-grid-space">
+                    <div class="immersive-thumb" onclick="openImmersiveLightbox(0)">
+                        <div class="shimmer-mask"></div>
+                        <img data-src="fotbar1.jpg" alt="Memory Core 1" class="lazy-core-load">
+                    </div>
+                    <div class="immersive-thumb" onclick="openImmersiveLightbox(1)">
+                        <div class="shimmer-mask"></div>
+                        <img data-src="fotbar2.jpg" alt="Memory Core 2" class="lazy-core-load">
+                    </div>
+                    <div class="immersive-thumb" onclick="openImmersiveLightbox(2)">
+                        <div class="shimmer-mask"></div>
+                        <img data-src="fotbar3.jpg" alt="Memory Core 3" class="lazy-core-load">
+                    </div>
+                    <div class="immersive-thumb" onclick="openImmersiveLightbox(3)">
+                        <div class="shimmer-mask"></div>
+                        <img data-src="fotbar4.jpg" alt="Memory Core 4" class="lazy-core-load">
+                    </div>
+                </div>
+
+                <div class="polaroid-stack-zone">
+                    <div class="polaroid-reflection-floor"></div>
+                    <div class="draggable-polaroid" style="transform: rotate(-5deg) translateX(-40px); z-index: 3;">
+                        <img src="stack1.jpg" alt="Stack Memory 1">
+                    </div>
+                    <div class="draggable-polaroid" style="transform: rotate(3deg) translateY(-20px); z-index: 2;">
+                        <img src="stack2.jpg" alt="Stack Memory 2">
+                    </div>
+                    <div class="draggable-polaroid" style="transform: rotate(-2deg) translateX(30px); z-index: 1;">
+                        <img src="stack3.jpg" alt="Stack Memory 3">
+                    </div>
+                </div>
+
+                <div class="action-hub-center">
+                    <button class="magnetic-btn btn-chiko-space" onclick="navigateSpatialSpace('chiko', '🌊 Entering Dimension of Chiko...')">🌊 Dimension of Chiko</button>
+                    <button class="magnetic-btn btn-hanum-space" onclick="navigateSpatialSpace('hanum', '💕 Opening Realm of Hanum...')">💕 Realm of Hanum</button>
+                </div>
+
+                <div class="system-toggles-container">
+                    <button class="egg-pill-btn" id="toggleLovefallBtn" onclick="toggleLovefallEngine()">Toggle Lovefall Effect</button>
+                    <button class="egg-pill-btn" onclick="triggerSecretAIQuote()">AI Quote Regenerator</button>
+                </div>
+            </div>
+        </section>
+      <section class="ios-view-section" id="sec-chiko">
+            <div class="spatial-card" style="box-shadow: 0 40px 100px rgba(0, 240, 255, 0.15);">
+                <div class="wet-texture"></div>
+                
+                <h2 class="apple-gradient-text" style="background: linear-gradient(180deg, #ffffff 0%, var(--chiko-cyan) 100%); -webkit-background-clip: text;">Chiko Zone</h2>
+                <p class="spatial-sub">Nuansa warna premium cyan blue dengan layout terstruktur layaknya Spotify Artist Dashboard.</p>
+                
+                <div class="pinterest-grid-space">
+                    <div class="immersive-thumb" onclick="openImmersiveLightbox(4)">
+                        <div class="shimmer-mask"></div>
+                        <img data-src="chiko1.jpg" alt="Chiko 1" class="lazy-core-load">
+                    </div>
+                    <div class="immersive-thumb" onclick="openImmersiveLightbox(5)">
+                        <div class="shimmer-mask"></div>
+                        <img data-src="chiko2.jpg" alt="Chiko 2" class="lazy-core-load">
+                    </div>
+                    <div class="immersive-thumb" onclick="openImmersiveLightbox(6)">
+                        <div class="shimmer-mask"></div>
+                        <img data-src="chiko3.jpg" alt="Chiko 3" class="lazy-core-load">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="ios-view-section" id="sec-hanum">
+            <div class="spatial-card" style="box-shadow: 0 40px 100px rgba(255, 82, 123, 0.15);">
+                <div class="wet-texture"></div>
+                
+                <h2 class="apple-gradient-text" style="background: linear-gradient(180deg, #ffffff 0%, var(--hanum-pink) 100%); -webkit-background-clip: text;">Hanum Realm</h2>
+                <p class="spatial-sub">Sentuhan estetika pink cinta berpadu kelembutan translusen mirip UI lirik Apple Music.</p>
+                
+                <div class="pinterest-grid-space">
+                    <div class="immersive-thumb" onclick="openImmersiveLightbox(7)">
+                        <div class="shimmer-mask"></div>
+                        <img data-src="hanum1.jpg" alt="Hanum 1" class="lazy-core-load">
+                    </div>
+                    <div class="immersive-thumb" onclick="openImmersiveLightbox(8)">
+                        <div class="shimmer-mask"></div>
+                        <img data-src="hanum2.jpg" alt="Hanum 2" class="lazy-core-load">
+                    </div>
+                    <div class="immersive-thumb" onclick="openImmersiveLightbox(9)">
+                        <div class="shimmer-mask"></div>
+                        <img data-src="hanum3.jpg" alt="Hanum 3" class="lazy-core-load">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="ios-view-section" id="sec-socials">
+            <div class="spatial-card">
+                <div class="wet-texture"></div>
+                
+                <h2 class="apple-gradient-text">Connect Space</h2>
+                <p class="spatial-sub">Pintu gerbang komunikasi interaktif terenkripsi personal.</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 24px;">
+                    <div style="background: rgba(255,255,255,0.02); padding: 25px; border-radius: 24px; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                        <div>
+                            <h4 style="color:#fff; font-size: 1.1em;">Instagram Network</h4>
+                            <p style="font-size:0.85em; color:var(--text-sub); margin-top: 2px;">Dokumentasi visual harian & momen estetik</p>
+                        </div>
+                        <div style="display:flex; gap:12px;">
+                            <a href="https://www.instagram.com/ndrsbkti?igsh=NmthM3JtcWZ5eGpl" target="_blank" class="magnetic-btn btn-chiko-space" style="padding: 12px 24px; font-size: 0.85em; text-decoration: none;">Chiko</a>
+                            <a href="https://www.instagram.com/hanuummm5?igsh=MTFtczJhc2JjOTVnYQ==" target="_blank" class="magnetic-btn btn-hanum-space" style="padding: 12px 24px; font-size: 0.85em; text-decoration: none;">Hanum</a>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.02); padding: 25px; border-radius: 24px; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                        <div>
+                            <h4 style="color:#fff; font-size: 1.1em;">TikTok Visual Stream</h4>
+                            <p style="font-size:0.85em; color:var(--text-sub); margin-top: 2px;">Kumpulan karya video sinematik pendek</p>
+                        </div>
+                        <div style="display:flex; gap:12px;">
+                            <a href="https://tiktok.com/@chikoindraaaa" target="_blank" class="magnetic-btn btn-chiko-space" style="padding: 12px 24px; font-size: 0.85em; text-decoration: none;">Chiko</a>
+                            <a href="https://www.tiktok.com/@segotworock910?_r=1&_t=ZS-96WPHgX0ILc" target="_blank" class="magnetic-btn btn-hanum-space" style="padding: 12px 24px; font-size: 0.85em; text-decoration: none;">Hanum</a>
+                        </div>
+                    </div>
+
+                    <div style="background: rgba(255,255,255,0.02); padding: 25px; border-radius: 24px; border: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                        <div>
+                            <h4 style="color:#fff; font-size: 1.1em;">Direct Secure WhatsApp</h4>
+                            <p style="font-size:0.85em; color:var(--text-sub); margin-top: 2px;">Komunikasi jalur privat respons cepat</p>
+                        </div>
+                        <div style="display:flex; gap:12px;">
+                            <a href="https://api.whatsapp.com/send/?phone=6285732664296" target="_blank" class="magnetic-btn btn-chiko-space" style="padding: 12px 24px; font-size: 0.85em; text-decoration: none;">Chiko</a>
+                            <a href="https://api.whatsapp.com/send/?phone=6283189197284" target="_blank" class="magnetic-btn btn-hanum-space" style="padding: 12px 24px; font-size: 0.85em; text-decoration: none;">Hanum</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div> <div class="spotify-spatial-player" id="spatialPlayer">
+        <div class="player-core-row">
+            <div class="music-vinyl-disk" id="musicVinyl">🎵</div>
+            <div class="track-meta-data">
+                <div class="track-core-title" id="lyricsTitle">Kisah Sempurna - Numindra</div>
+                <div class="track-core-artist">Exclusive Spatial Audio</div>
+            </div>
+            <button class="player-action-btn" onclick="toggleSpatialMusicCore()" id="spatialPlayBtn">▶</button>
+        </div>
+        <div class="lyric-popup-panel" id="lyricTextStream">Music Engine Ready • Klik Play</div>
+    </div>
+
+    <div class="immersive-lightbox" id="immersiveLightbox">
+        <div class="lightbox-container">
+            <button class="lightbox-nav-btn box-close-btn" onclick="closeImmersiveLightbox()">✕</button>
+            <button class="lightbox-nav-btn box-prev-btn" onclick="navigateLightboxImages(-1)">❮</button>
+            <img src="" alt="View Core Max" class="lightbox-main-img" id="targetLightboxSrc">
+            <button class="lightbox-nav-btn box-next-btn" onclick="navigateLightboxImages(1)">❯</button>
+        </div>
+    </div>
+      <div class="fixed-ios-dock-wrapper">
+        <div class="fixed-ios-dock">
+            <div class="dock-reflection-layer"></div>
+            <div class="dock-core-icon active-icon" onclick="navigateSpatialSpace('home', '🏠 Membuka Beranda Spatial Hub...')" title="Beranda">🏠</div>
+            <div class="dock-core-icon" onclick="navigateSpatialSpace('chiko', '🌊 Sinkronisasi Dimensi Cyan Chiko...')" title="Album Chiko">🌊</div>
+            <div class="dock-core-icon" onclick="navigateSpatialSpace('hanum', '💕 Membuka Gerbang Cinta Hanum...')" title="Album Hanum">💕</div>
+            <div class="dock-core-icon" onclick="navigateSpatialSpace('socials', '📱 Membuka Hub Enkripsi Jaringan...')" title="Sosial Media">📱</div>
+        </div>
+    </div>
+
+    <style>
+        /* CSS KHUSUS FIXED IPHONE STYLE DOCK NAV */
+        .fixed-ios-dock-wrapper {
+            position: fixed;
+            bottom: 25px; left: 0; width: 100%;
+            display: flex; justify-content: center;
+            z-index: 990; pointer-events: none;
+            transform: translateZ(200px);
+        }
+        .fixed-ios-dock {
+            background: rgba(20, 20, 35, 0.25);
+            backdrop-filter: blur(40px) saturate(220%);
+            -webkit-backdrop-filter: blur(40px) saturate(220%);
+            border: 1px solid var(--glass-border);
+            padding: 12px 28px;
+            border-radius: 40px;
+            display: flex; align-items: center; gap: 24px;
+            box-shadow: var(--shadow-deep);
+            pointer-events: auto;
+            position: relative; overflow: hidden;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.3s;
+        }
+        .fixed-ios-dock:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: scale(1.02);
+        }
+        .dock-reflection-layer {
+            position: absolute; top:0; left:0; width:100%; height:50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        .dock-core-icon {
+            font-size: 1.45em; color: var(--text-sub); cursor: pointer;
+            width: 46px; height: 46px; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.3), background 0.3s, color 0.3s;
+        }
+        .dock-core-icon:hover {
+            transform: scale(1.3) translateY(-6px);
+            color: #fff; background: rgba(255,255,255,0.08);
+        }
+        .dock-core-icon.active-icon {
+            color: var(--chiko-cyan); background: rgba(255,255,255,0.1);
+            text-shadow: 0 0 12px var(--chiko-cyan);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+        }
+        @media (max-width: 480px) {
+            .fixed-ios-dock { gap: 16px; padding: 10px 20px; }
+            .dock-core-icon { width: 42px; height: 42px; font-size: 1.3em; }
+        }
+    </style>
+
+    <script>
+        // 1. DATA IMAGE & SPOTIFY LYRIC STREAM RESOURCE
+        const globalImages = [
+            "fotbar1.jpg", "fotbar2.jpg", "fotbar3.jpg", "fotbar4.jpg",
+            "chiko1.jpg", "chiko2.jpg", "chiko3.jpg",
+            "hanum1.jpg", "hanum2.jpg", "hanum3.jpg"
+        ];
+
+        const spotifyLyrics = [
+            "Merasakan atmosfer digital Numindra...",
+            "Aku tau... Kita berbeda warna...",
+            "Chiko dengan Cyan Biru segarnya... 🌊",
+            "Hanum dengan Pink Cinta lembutnya... 💕",
+            "Namun di semesta VisionOS ini...",
+            "Memori kita abadi dalam jaringan waktu... ✨",
+            "Menatap masa depan bersama 2026 🚀"
+        ];
+
+        let activeBoxIndex = 0;
+        let isMusicPlaying = false;
+        let lyricTimer = null;
+        let currentLyricRow = 0;
+        let lovefallActive = false;
+
+        // 2. BOOT STARTUP & ENGINE INITIALIZATION
+        window.addEventListener("DOMContentLoaded", () => {
+            // Typing Text Intro Animation Action
+            runTypingAnimationEngine();
+
+            setTimeout(() => {
+                const bootScreen = document.getElementById("bootScreen");
+                bootScreen.style.opacity = "0";
+                bootScreen.style.filter = "blur(20px)";
+                setTimeout(() => { bootScreen.style.display = "none"; }, 1200);
+                
+                // Active Core Image Observer
+                activateLazyLoadingObserver();
+                updateRealtimeClockDashboard();
+                setInterval(updateRealtimeClockDashboard, 1000);
+            }, 2500);
+        });
+
+        // 3. TEXT TYPING ANIMATION ENGINE
+        function runTypingAnimationEngine() {
+            const target = document.getElementById("typingTarget");
+            const txt = "Numindra Space";
+            target.innerText = "";
+            let i = 0;
+            function type() {
+                if (i < txt.length) {
+                    target.innerHTML += txt.charAt(i);
+                    i++;
+                    setTimeout(type, 100);
+                }
+            }
+            setTimeout(type, 600);
+        }
+
+        // 4. REALTIME DATE & CLOCK WIDGET (2026 SETTINGS)
+        function updateRealtimeClockDashboard() {
+            const now = new Date();
+            document.getElementById("liveClock").innerText = now.toTimeString().split(' ')[0];
+            
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById("liveDate").innerText = now.toLocaleDateString('id-ID', options);
+        }
+
+        // 5. INERTIA MORPH ROUTER SPATIAL PAGES
+        function navigateSpatialSpace(targetSpaceId, notifyMsg) {
+            document.querySelectorAll(".ios-view-section").forEach(sec => {
+                sec.classList.remove("active-space");
+            });
+
+            // Set Background Engine Color Shift based on Section
+            const universe = document.getElementById("universeEngine");
+            if(targetSpaceId === 'chiko') universe.style.background = "radial-gradient(circle at 50% 50%, #03141a, #010103)";
+            else if(targetSpaceId === 'hanum') universe.style.background = "radial-gradient(circle at 50% 50%, #1a050f, #010103)";
+            else universe.style.background = "radial-gradient(circle at 50% 50%, #060713, #010103)";
+
+            setTimeout(() => {
+                const activeSection = document.getElementById("sec-" + targetSpaceId);
+                if(activeSection) {
+                    activeSection.classList.add("active-space");
+                    // Trigger Haptic Floating Notification
+                    if(window.parent && window.parent.triggerIslandNotification) {
+                        window.parent.triggerIslandNotification(notifyMsg);
+                    } else {
+                        console.log(notifyMsg);
+                    }
+                }
+            }, 150);
+
+            // Update Bottom Dock State Style
+            document.querySelectorAll(".dock-core-icon").forEach((icon, idx) => {
+                icon.classList.remove("active-icon");
+                const pageMap = ['home', 'chiko', 'hanum', 'socials'];
+                if(pageMap[idx] === targetSpaceId) icon.classList.add("active-icon");
+            });
+        }
+
+        // 6. SKELETON LAZY LOADING IMPLEMENTATION
+        function activateLazyLoadingObserver() {
+            const imgs = document.querySelectorAll(".lazy-core-load");
+            const observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.getAttribute("data-src");
+                        img.onload = () => {
+                            img.classList.add("img-ready");
+                            if(img.previousElementSibling) img.previousElementSibling.style.opacity = "0";
+                        };
+                        obs.unobserve(img);
+                    }
+                });
+            });
+            imgs.forEach(i => observer.observe(i));
+        }
+
+        // 7. DRAGGABLE POLAROID LAYER ENGINE MECHANIC
+        const cards = document.querySelectorAll('.draggable-polaroid');
+        let activeDragCard = null;
+        let startX = 0, startY = 0, cardX = 0, cardY = 0;
+
+        cards.forEach(card => {
+            card.addEventListener('touchstart', (e) => {
+                activeDragCard = card;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                const style = window.getComputedStyle(card);
+                const matrix = new WebKitCSSMatrix(style.transform);
+                cardX = matrix.m41;
+                cardY = matrix.m42;
+                card.style.transition = "none";
+            });
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!activeDragCard) return;
+            let currentX = e.touches[0].clientX;
+            let currentY = e.touches[0].clientY;
+            let dx = currentX - startX;
+            let dy = currentY - startY;
+            activeDragCard.style.transform = `translate3d(${cardX + dx}px, ${cardY + dy}px, 50px) rotate(5deg)`;
+        });
+
+        document.addEventListener('touchend', () => {
+            if (!activeDragCard) return;
+            activeDragCard.style.transition = "transform 0.5s cubic-bezier(0.25, 1, 0.3, 1)";
+            activeDragCard = null;
+        });
+
+        // 8. SPOTIFY SYNC LYRIC PLAYER AUDIO ENGINE CONTROL
+        function toggleSpatialMusicCore() {
+            isMusicPlaying = !isMusicPlaying;
+            const vinyl = document.getElementById("musicVinyl");
+            const btn = document.getElementById("spatialPlayBtn");
+            const stream = document.getElementById("lyricTextStream");
+
+            if(isMusicPlaying) {
+                document.getElementById("spatialPlayer").classList.add("active-playing");
+                btn.innerText = "⏸";
+                lyricTimer = setInterval(() => {
+                    stream.style.opacity = "0";
+                    setTimeout(() => {
+                        stream.innerText = spotifyLyrics[currentLyricRow];
+                        stream.style.opacity = "1";
+                        currentLyricRow = (currentLyricRow + 1) % spotifyLyrics.length;
+                    }, 300);
+                }, 3500);
+            } else {
+                document.getElementById("spatialPlayer").classList.remove("active-playing");
+                btn.innerText = "▶";
+                clearInterval(lyricTimer);
+                stream.innerText = "Music Dipause • Audio Standby";
+            }
+        }
+
+        // 9. IMMERSIVE LIGHTBOX GALLERY WINDOW CONTROL
+        function openImmersiveLightbox(idx) {
+            activeBoxIndex = idx;
+            const lightbox = document.getElementById("immersiveLightbox");
+            const img = document.getElementById("targetLightboxSrc");
+            img.src = globalImages[activeBoxIndex];
+            lightbox.classList.add("show-box");
+        }
+        function closeImmersiveLightbox() {
+            document.getElementById("immersiveLightbox").classList.remove("show-box");
+        }
+        function navigateLightboxImages(dir) {
+            activeBoxIndex = (activeBoxIndex + dir + globalImages.length) % globalImages.length;
+            const img = document.getElementById("targetLightboxSrc");
+            img.style.transform = "scale(0.95) blur(8px)";
+            setTimeout(() => {
+                img.src = globalImages[activeBoxIndex];
+                img.style.transform = "scale(1) blur(0)";
+            }, 200);
+        }
+
+        // 10. AI GENERATED RANDOM EASTER EGG QUOTES
+        const aiDatabaseQuotes = [
+            "Menjelajahi waktu, merajut asmara di dimensi spatial 2026.",
+            "Detak digital ini milik kita, sinkron dalam harmoni abadi.",
+            "Cyan melambangkan ketenangan Chiko, Pink melambangkan kasih Hanum."
+        ];
+        function triggerSecretAIQuote() {
+            const rand = aiDatabaseQuotes[Math.floor(Math.random() * aiDatabaseQuotes.length)];
+            alert(`✨ AI Spatial Quote: \n${rand}`);
+        }
+
+        // 11. SNOWFALL / LOVEFALL TOGGLE SYSTEM GRAPHIC ENGINE
+        const loveCanvas = document.getElementById("lovefallCanvas");
+        const loveCtx = loveCanvas.getContext("2d");
+        let heartPool = [];
+
+        function toggleLovefallEngine() {
+            lovefallActive = !lovefallActive;
+            const btn = document.getElementById("toggleLovefallBtn");
+            if(lovefallActive) {
+                loveCanvas.style.display = "block";
+                btn.classList.add("active-pill");
+                resizeLoveCanvas();
+                animateLovefall();
+            } else {
+                loveCanvas.style.display = "none";
+                btn.classList.remove("active-pill");
+                heartPool = [];
+            }
+        }
+
+        function resizeLoveCanvas() {
+            loveCanvas.width = window.innerWidth;
+            loveCanvas.height = window.innerHeight;
+        }
+
+        class HeartParticle {
+            constructor() {
+                this.x = Math.random() * loveCanvas.width;
+                this.y = -20;
+                this.size = Math.random() * 8 + 5;
+                this.speed = Math.random() * 1.5 + 1;
+                this.weight = Math.random() * 0.02;
+            }
+            update() {
+                this.y += this.speed;
+                if(this.y > loveCanvas.height) {
+                    this.y = -20;
+                    this.x = Math.random() * loveCanvas.width;
+                }
+            }
+            draw() {
+                loveCtx.fillStyle = "rgba(255, 82, 123, 0.4)";
+                loveCtx.font = `${this.size}px Arial`;
+                loveCtx.fillText("❤️", this.x, this.y);
+            }
+        }
+
+        function animateLovefall() {
+            if(!lovefallActive) return;
+            loveCtx.clearRect(0, 0, loveCanvas.width, loveCanvas.height);
+            if(heartPool.length < 25) heartPool.push(new HeartParticle());
+            heartPool.forEach(h => { h.update(); h.draw(); });
+            requestAnimationFrame(animateLovefall);
+        }
+
+        // 12. STARFIELD 120FPS CANVAS BACKGROUND SYSTEM
+        const sky = document.getElementById("skyCanvas");
+        const skyCtx = sky.getContext("2d");
+        let skyStars = [];
+
+        function resizeSky() { sky.width = window.innerWidth; sky.height = window.innerHeight; }
+        window.addEventListener("resize", resizeSky);
+        resizeSky();
+
+        for(let i=0; i<40; i++) {
+            skyStars.push({
+                x: Math.random() * sky.width,
+                y: Math.random() * sky.height,
+                r: Math.random() * 1.2 + 0.3,
+                opacity: Math.random()
+            });
+        }
+
+        function renderSkyStars() {
+            skyCtx.clearRect(0,0,sky.width,sky.height);
+            skyStars.forEach(s => {
+                s.opacity += 0.008;
+                if(s.opacity > 1) s.opacity = 0;
+                skyCtx.fillStyle = `rgba(255,255,255,${Math.sin(s.opacity)})`;
+                skyCtx.beginPath();
+                skyCtx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+                skyCtx.fill();
+            });
+            requestAnimationFrame(renderSkyStars);
+        }
+        renderSkyStars();
+
+        // Inner card scrolling indicator track bar logic
+        document.querySelector('.spatial-card').addEventListener('scroll', (e) => {
+            const el = e.target;
+            const pct = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
+            document.getElementById("scrollProgress").style.width = pct + "%";
+        });
+    </script>
+</body>
+</html>
