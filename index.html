@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numindra Family</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* === CONFIG TEMA INTERAKTIF (iOS Dynamic Style) === */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 50%, #c3cfe2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.25);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --text-color: #222;
+            --nav-bg: rgba(255, 255, 255, 0.35);
+            --sub-text: #555;
+            --card-shadow: rgba(0, 0, 0, 0.04);
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #111827 0%, #1f2937 50%, #2e102d 100%);
+            --glass-bg: rgba(17, 24, 39, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-color: #f3f4f6;
+            --nav-bg: rgba(17, 24, 39, 0.45);
+            --sub-text: #9ca3af;
+            --card-shadow: rgba(0, 0, 0, 0.4);
+        }
+
+        /* === RESET & BASE STYLES === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            overflow-x: hidden;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            background-size: cover;
+            min-height: 100vh;
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive;
+            font-weight: normal;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        /* === NAVIGASI GLASSMORPHISM === */
+        nav {
+            background: var(--nav-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 25px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+        }
+        .nav-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+        }
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .theme-toggle, .menu-icon {
+            font-size: 1.5em;
+            cursor: pointer;
+            user-select: none;
+            color: var(--text-color);
+            transition: transform 0.3s ease;
+        }
+        .theme-toggle:hover, .menu-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Sidebar Glassmorphism */
+        .sidebar-menu {
+            position: fixed;
+            top: 0;
+            right: -320px; 
+            width: 300px;
+            height: 100vh;
+            background: var(--nav-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-left: 1px solid var(--glass-border);
+            box-shadow: -10px 0 30px var(--card-shadow);
+            padding: 90px 25px 25px 25px;
+            transition: right 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 999;
+            text-align: left;
+        }
+        .sidebar-menu.active {
+            right: 0;
+        }
+        .sidebar-menu h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.1em;
+            color: var(--text-color);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 5px;
+        }
+        .menu-item-home {
+            display: block;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 12px;
+            text-align: center;
+            border-radius: 14px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: 0.3s;
+        }
+        .menu-item-home:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .socmed-section {
+            margin-bottom: 25px;
+        }
+        .socmed-section p {
+            font-weight: 600;
+            font-size: 0.9em;
+            color: var(--sub-text);
+            margin-bottom: 8px;
+        }
+        .socmed-links {
+            display: flex;
+            gap: 10px;
+        }
+        .socmed-links a {
+            flex: 1;
+            text-decoration: none;
+            font-size: 0.85em;
+            padding: 10px;
+            text-align: center;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s;
+        }
+        .btn-chiko-sm { background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); }
+        .btn-hanum-sm { background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); }
+        .socmed-links a:hover { 
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        /* === CARDS GLASSMORPHISM === */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            padding: 40px 20px;
+            box-shadow: 0 10px 40px var(--card-shadow);
+            margin-bottom: 30px;
+            transition: background 0.4s ease;
+        }
+
+        /* === SISTEM HALAMAN / PAGES === */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-top: 110px;
+            opacity: 0;
+        }
+        .page.active {
+            display: block;
+            animation: fadeInSlideUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+
+        @keyframes fadeInSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* === BERANDA === */
+        #beranda h1 { font-size: 3.5em; margin-bottom: 10px; }
+        #beranda p.subtitle { color: var(--sub-text); font-size: 1.1em; margin-bottom: 35px; }
+
+        .gallery-beranda {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        .gallery-beranda img, .album-grid img {
+            cursor: pointer;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.6);
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+        }
+        .gallery-beranda img {
+            width: 170px;
+            height: 220px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px var(--card-shadow);
+        }
+        .gallery-beranda img:hover {
+            transform: scale(1.06) translateY(-8px);
+        }
+
+        /* Album Selection Zone */
+        .album-selection-zone {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .btn-album {
+            padding: 16px 40px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+            color: white;
+            min-width: 230px;
+        }
+        .btn-album-chiko { background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%); box-shadow: 0 6px 20px rgba(0, 114, 255, 0.25); }
+        .btn-album-hanum { background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%); box-shadow: 0 6px 20px rgba(255, 117, 140, 0.25); }
+        .btn-album:hover { transform: translateY(-4px) scale(1.02); }
+
+        /* === TOMBOL KEMBALI === */
+        .btn-back {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            margin-bottom: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.3s, background 0.3s;
+        }
+        .btn-back:hover { transform: translateX(-4px); background: rgba(255, 255, 255, 0.4); }
+
+        /* === ALBUMS GRID === */
+        .page h2 { font-size: 3.5em; margin-bottom: 10px; }
+        .page p.album-desc { color: var(--sub-text); margin-bottom: 30px; }
+        .love-pulse { display: inline-block; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+
+        .album-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+        .album-grid img {
+            width: 100%;
+            height: 340px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px var(--card-shadow);
+        }
+        .album-grid img:hover { transform: scale(1.03) translateY(-5px); }
+
+        /* === iOS MODERN FULLSCREEN LIGHTBOX === */
+        .ios-lightbox {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .ios-lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .lightbox-content {
+            position: relative;
+            max-width: 85%;
+            max-height: 80%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 75vh;
+            object-fit: contain;
+            border-radius: 16px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            transform: scale(0.85);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .ios-lightbox.active .lightbox-img {
+            transform: scale(1);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: -60px; right: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border: none; color: white;
+            width: 44px; height: 44px; border-radius: 50%;
+            font-size: 1.3em; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px);
+            transition: background 0.2s;
+        }
+        .lightbox-close:hover { background: rgba(255, 255, 255, 0.3); }
+        
+        .lightbox-btn {
+            position: absolute;
+            top: 50%; transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.18);
+            color: white; border: none;
+            width: 50px; height: 50px; border-radius: 50%;
+            font-size: 1.4em; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(10px);
+            transition: background 0.3s, transform 0.2s;
+            z-index: 2010;
+        }
+        .lightbox-btn:hover { background: rgba(255, 255, 255, 0.35); transform: translateY(-50%) scale(1.05); }
+        .lightbox-prev { left: -75px; }
+        .lightbox-next { right: -75px; }
+
+        @media (max-width: 768px) {
+            .lightbox-prev { left: -10px; top: auto; bottom: -80px; transform: none; }
+            .lightbox-next { right: -10px; top: auto; bottom: -80px; transform: none; }
+            .lightbox-prev:hover, .lightbox-next:hover { transform: scale(1.05); }
+            .lightbox-close { top: -65px; right: 50%; transform: translateX(50%); }
+            #beranda h1, .page h2 { font-size: 2.5em; }
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--nav-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+            padding: 25px;
+            color: var(--sub-text);
+            font-size: 0.85em;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-title" onclick="navigateTo('beranda')">✨ Numindra Family</div>
+        <div class="nav-right">
+            <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
+            <div class="menu-icon" onclick="toggleSidebar()">☰</div>
+        </div>
+    </nav>
+
+    <div class="sidebar-menu" id="sidebarMenu">
+        <a href="#" class="menu-item-home" onclick="navigateTo('beranda')">🏠 Beranda Utama</a>
+        <h3>📱 Media Sosial Kami</h3>
+        <div class="socmed-section">
+            <p>📸 Instagram</p>
+            <div class="socmed-links">
+                <a href="https://www.instagram.com/ndrsbkti?igsh=NmthM3JtcWZ5eGpl" target="_blank" class="btn-chiko-sm">Chiko</a>
+                <a href="https://www.instagram.com/hanuummm5?igsh=MTFtczJhc2JjOTVnYQ==" target="_blank" class="btn-hanum-sm">Hanum</a>
+            </div>
+        </div>
+        <div class="socmed-section">
+            <p>🎵 TikTok</p>
+            <div class="socmed-links">
+                <a href="https://tiktok.com/@chikoindraaaa" target="_blank" class="btn-chiko-sm">Chiko</a>
+                <a href="https://www.tiktok.com/@segotworock910?_r=1&_t=ZS-96WPHgX0ILc" target="_blank" class="btn-hanum-sm">Hanum</a>
+            </div>
+        </div>
+        <div class="socmed-section">
+            <p>💬 WhatsApp</p>
+            <div class="socmed-links">
+                <a href="https://api.whatsapp.com/send/?phone=6285732664296&text&type=phone_number&app_absent=0" target="_blank" class="btn-chiko-sm">Chiko</a>
+                <a href="https://api.whatsapp.com/send/?phone=6283189197284&text&type=phone_number&app_absent=0" target="_blank" class="btn-hanum-sm">Hanum</a>
+            </div>
+        </div>
+    </div>
+
+    <section id="beranda" class="page active">
+        <div class="container">
+            <div class="glass-card">
+                <h1>Numindra Family</h1>
+                <p class="subtitle">Kisah kita, terekam dalam warna cyan dan sentuhan cinta ❤️</p>
+                <div class="gallery-beranda">
+                    <img src="fotbar1.jpg" alt="Foto Bareng 1" class="gallery-img">
+                    <img src="fotbar2.jpg" alt="Foto Bareng 2" class="gallery-img">
+                    <img src="fotbar3.jpg" alt="Foto Bareng 3" class="gallery-img">
+                    <img src="fotbar4.jpg" alt="Foto Bareng 4" class="gallery-img">
+                    <img src="fotbar5.jpg" alt="Foto Bareng 5" class="gallery-img">
+                </div>
+                <div class="album-selection-zone">
+                    <button class="btn-album btn-album-chiko" onclick="navigateTo('chiko')">🌊 Album Chiko</button>
+                    <button class="btn-album btn-album-hanum" onclick="navigateTo('hanum')">💕 Album Hanum</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="chiko" class="page">
+        <div class="container">
+            <button class="btn-back" onclick="navigateTo('beranda')">⬅ Kembali</button>
+            <div class="glass-card">
+                <h2>Chiko 🌊</h2>
+                <p class="album-desc">Nuansa cyan cerah & gradasi biru segar ala Spotify Player.</p>
+                <div class="album-grid">
+                    <img src="chiko1.jpg" alt="Foto Chiko 1" class="gallery-img">
+                    <img src="chiko2.jpg" alt="Foto Chiko 2" class="gallery-img">
+                    <img src="chiko3.jpg" alt="Foto Chiko 3" class="gallery-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="hanum" class="page">
+        <div class="container">
+            <button class="btn-back" onclick="navigateTo('beranda')">⬅ Kembali</button>
+            <div class="glass-card">
+                <h2>Hanum <span class="love-pulse">💖</span></h2>
+                <p class="album-desc">Nuansa pink lembut bertabur cinta romantis ala Apple Music.</p>
+                <div class="album-grid">
+                    <img src="hanum1.jpg" alt="Foto Hanum 1" class="gallery-img">
+                    <img src="hanum2.jpg" alt="Foto Hanum 2" class="gallery-img">
+                    <img src="hanum3.jpg" alt="Foto Hanum 3" class="gallery-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="ios-lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+            <button class="lightbox-btn lightbox-prev" onclick="changeImage(-1)">❮</button>
+            <img src="" alt="Fullscreen" class="lightbox-img" id="lightboxImg">
+            <button class="lightbox-btn lightbox-next" onclick="changeImage(1)">❯</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Numindra Family. Dibuat dengan penuh cinta ❤️</p>
+    </footer>
+
+    <script>
+        // --- 1. SYSTEM TRANSISI HALAMAN (FIXED) ---
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(pageId);
+            if(target) {
+                target.classList.add('active');
+            }
+            closeSidebar();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // --- 2. SIDEBAR NAVIGATION ---
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarMenu');
+            sidebar.classList.toggle('active');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebarMenu').classList.remove('active');
+        }
+
+        // --- 3. TEMA DYNAMIC DARK/LIGHT ---
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const targetTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', targetTheme);
+        }
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+
+        // --- 4. FULLSCREEN GALLERY (iOS STYLE MECHANISM) ---
+        let currentImgIndex = 0;
+        const allImagesSrc = [];
+
+        // Daftarkan semua elemen gambar di page secara real-time
+        document.querySelectorAll(".gallery-img").forEach((img, index) => {
+            allImagesSrc.push(img.src);
+            img.onclick = function() {
+                openLightbox(index);
+            };
+        });
+
+        function openLightbox(index) {
+            currentImgIndex = index;
+            const lightbox = document.getElementById("lightbox");
+            const lightboxImg = document.getElementById("lightboxImg");
+            lightboxImg.src = allImagesSrc[currentImgInde
