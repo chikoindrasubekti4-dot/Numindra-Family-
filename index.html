@@ -477,7 +477,7 @@
     </footer>
 
     <script>
-        // --- 1. SYSTEM TRANSISI HALAMAN (FIXED) ---
+        // --- 1. SYSTEM TRANSISI HALAMAN ---
         function navigateTo(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const target = document.getElementById(pageId);
@@ -511,7 +511,6 @@
         let currentImgIndex = 0;
         const allImagesSrc = [];
 
-        // Daftarkan semua elemen gambar di page secara real-time
         document.querySelectorAll(".gallery-img").forEach((img, index) => {
             allImagesSrc.push(img.src);
             img.onclick = function() {
@@ -523,4 +522,42 @@
             currentImgIndex = index;
             const lightbox = document.getElementById("lightbox");
             const lightboxImg = document.getElementById("lightboxImg");
-            lightboxImg.src = allImagesSrc[currentImgInde
+            lightboxImg.src = allImagesSrc[currentImgIndex];
+            lightbox.classList.add("active");
+            document.body.style.overflow = "hidden";
+        }
+
+        function closeLightbox() {
+            document.getElementById("lightbox").classList.remove("active");
+            document.body.style.overflow = "auto";
+        }
+
+        function changeImage(direction) {
+            currentImgIndex += direction;
+            if (currentImgIndex >= allImagesSrc.length) currentImgIndex = 0;
+            if (currentImgIndex < 0) currentImgIndex = allImagesSrc.length - 1;
+            
+            const lightboxImg = document.getElementById("lightboxImg");
+            lightboxImg.style.transform = "scale(0.92)";
+            lightboxImg.style.opacity = "0.5";
+            
+            setTimeout(() => {
+                lightboxImg.src = allImagesSrc[currentImgIndex];
+                lightboxImg.style.transform = "scale(1)";
+                lightboxImg.style.opacity = "1";
+            }, 100);
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (!document.getElementById("lightbox").classList.contains("active")) return;
+            if (e.key === "Escape") closeLightbox();
+            if (e.key === "ArrowRight") changeImage(1);
+            if (e.key === "ArrowLeft") changeImage(-1);
+        });
+
+        document.getElementById("lightbox").addEventListener("click", function(e) {
+            if (e.target === this) closeLightbox();
+        });
+    </script>
+</body>
+</html>
